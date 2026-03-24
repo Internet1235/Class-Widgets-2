@@ -426,7 +426,7 @@ class ScheduleRuntime(QObject):
         # Preparation bell notification
         if (
             self.next_entries and len(self.next_entries) > 0 and
-            self.current_status in {EntryType.FREE, EntryType.PREPARATION}
+            self.current_status in {EntryType.FREE, EntryType.BREAK}
         ):
             try:
                 next_entry = self.next_entries[0]
@@ -475,4 +475,3 @@ class ScheduleRuntime(QObject):
                     
             except (ValueError, AttributeError, TypeError, IndexError) as e:
                 logger.warning(f"Error preparing preparation bell notification: {e}")
-
