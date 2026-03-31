@@ -116,17 +116,16 @@ class ScheduleServices:
             return max(next_dt - now, timedelta(0))
         return timedelta(0)
 
-    def get_current_status(self, day: Timeline, now: Optional[datetime] = None) -> EntryType:
+    @staticmethod
+    def get_current_status(day: Timeline, now: Optional[datetime] = None, prep_min: int = 2) -> EntryType:
         now = now or datetime.now()
-        current_offset_time = now + timedelta(seconds=self.app_central.configs.schedule.time_offset)
-        prep_min = self.app_central.configs.schedule.preparation_time or 2
+        current = ScheduleServices.get_current_entry(day, now)
         upcoming = ScheduleServices.get_next_entries(day, now)
         if upcoming:
             next_start = datetime.strptime(upcoming[0].startTime, "%H:%M")
             next_start = datetime.combine(now.date(), next_start.time())
-            if next_start - timedelta(minutes=prep_min) <= current_offset_time.replace(microsecond=0):
+            if next_start - timedelta(minutes=prep_min) <= now.replace(microsecond=0) and (current and current.type == EntryType.BREAK) or not current:
                 return EntryType.PREPARATION
-        current = ScheduleServices.get_current_entry(day, now)
         return current.type if current else EntryType.FREE
 
     @staticmethod
