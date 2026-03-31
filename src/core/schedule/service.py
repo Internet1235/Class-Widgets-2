@@ -118,8 +118,8 @@ class ScheduleServices:
 
     def get_current_status(self, day: Timeline, now: Optional[datetime] = None) -> EntryType:
         now = now or datetime.now()
-        current_offset_time = now + timedelta(seconds=getattr(self.app_central.configs.schedule, "time_offset", 0))
-        prep_min = getattr(self.app_central.configs.schedule, "preparation_time", 2) or 2
+        current_offset_time = now + timedelta(seconds=self.app_central.configs.schedule.time_offset)
+        prep_min = self.app_central.configs.schedule.preparation_time or 2
         upcoming = ScheduleServices.get_next_entries(day, now)
         if upcoming:
             next_start = datetime.strptime(upcoming[0].startTime, "%H:%M")
