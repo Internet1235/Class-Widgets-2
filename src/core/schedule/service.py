@@ -121,10 +121,10 @@ class ScheduleServices:
         now = now or datetime.now()
         current = ScheduleServices.get_current_entry(day, now)
         upcoming = ScheduleServices.get_next_entries(day, now)
-        if upcoming:
+        if upcoming and (not current or current.type == EntryType.BREAK):
             next_start = datetime.strptime(upcoming[0].startTime, "%H:%M")
             next_start = datetime.combine(now.date(), next_start.time())
-            if next_start - timedelta(minutes=prep_min) <= now.replace(microsecond=0) and (current and current.type == EntryType.BREAK) or not current:
+            if next_start - timedelta(minutes=prep_min) <= now.replace(microsecond=0):
                 return EntryType.PREPARATION
         return current.type if current else EntryType.FREE
 
@@ -178,4 +178,3 @@ class ScheduleServices:
             return current_week in weeks
 
         return False
-
