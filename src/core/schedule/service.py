@@ -120,8 +120,10 @@ class ScheduleServices:
     def get_current_status(day: Timeline, now: Optional[datetime] = None, prep_min: int = 2) -> EntryType:
         now = now or datetime.now()
         current = ScheduleServices.get_current_entry(day, now)
+        if current and current.type != EntryType.BREAK:
+            return current.type
         upcoming = ScheduleServices.get_next_entries(day, now)
-        if upcoming and (not current or current.type == EntryType.BREAK):
+        if upcoming:
             next_start = datetime.strptime(upcoming[0].startTime, "%H:%M")
             next_start = datetime.combine(now.date(), next_start.time())
             if next_start - timedelta(minutes=prep_min) <= now.replace(microsecond=0):
