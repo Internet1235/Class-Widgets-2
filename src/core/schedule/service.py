@@ -120,7 +120,7 @@ class ScheduleServices:
     def get_current_status(day: Timeline, now: Optional[datetime] = None, prep_min: int = 2) -> EntryType:
         now = now or datetime.now()
         current = ScheduleServices.get_current_entry(day, now)
-        if current and current.type != EntryType.BREAK:
+        if current and current.type != EntryType.BREAK and current.type != EntryType.FREE:
             return current.type
         upcoming = ScheduleServices.get_next_entries(day, now)
         if upcoming:
