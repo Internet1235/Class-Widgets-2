@@ -143,12 +143,16 @@ class ScheduleServices:
     @staticmethod
     def get_current_status(day: Timeline, now: Optional[datetime] = None, prep_min: int = 2) -> EntryType:
         now = now or datetime.now()
+        current = ScheduleServices.get_current_entry(day, now)
+
+        if current and current.type not in (EntryType.BREAK, EntryType.FREE):
+            return current.type
+
         if upcoming := ScheduleServices.get_next_entries(day, now):
             next_start = datetime.combine(now.date(), datetime.strptime(upcoming[0].startTime, "%H:%M").time())
             if next_start - timedelta(minutes=prep_min) <= now.replace(microsecond=0):
                 return EntryType.PREPARATION
 
-        current = ScheduleServices.get_current_entry(day, now)
         return current.type if current else EntryType.FREE
 
     @staticmethod
