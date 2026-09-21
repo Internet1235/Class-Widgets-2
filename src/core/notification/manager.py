@@ -137,6 +137,10 @@ class NotificationManager(QObject):
             if not data.silent:
                 try:
                     if self.app_central and hasattr(self.app_central, 'utils_backend') and self.app_central.utils_backend:
+                        from src.core.schedule.model import EntryType
+                        if not (self.app_central.runtime.current_status == EntryType.CLASS
+                        or self.app_central.runtime.current_status == EntryType.ACTIVITY):
+                            self.app_central.configs.interactions.hide.state = False
                         self.app_central.utils_backend.playNotificationSound(data.provider_id, data.level)
                 except Exception as e:
                     logger.error(f"Sound playback error: {e}")
