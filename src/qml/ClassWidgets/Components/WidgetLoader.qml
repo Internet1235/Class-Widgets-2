@@ -20,9 +20,6 @@ Loader {
             if (item && item.hasOwnProperty('instanceId')) {
                 item.instanceId = model.instanceId
             }
-            if (item && item.hasOwnProperty('widget_id')) {
-                item.widget_id = model.widget_id
-            }
             if (item && item.hasOwnProperty('editMode')) {
                 item.editMode = widgetsContainer.editMode
             }
@@ -44,9 +41,6 @@ Loader {
             }
             if (loader.item && loader.item.hasOwnProperty('instanceId')) {
                 loader.item.instanceId = model.instanceId
-            }
-            if (loader.item && loader.item.hasOwnProperty('widget_id')) {
-                loader.item.widget_id = model.widget_id
             }
         }
     }
