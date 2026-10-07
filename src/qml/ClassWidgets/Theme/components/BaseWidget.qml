@@ -17,12 +17,11 @@ Item {
     property var backend: null
     property var settings: null
     property string instanceId: ""
-    property string widget_id: ""
 
     property color backgroundColor: "#808080"
     property color borderColor: "transparent"
     property real borderWidth: 1
-    property real cornerRadius: Configs.data.preferences.widget_corner_radius
+    property real cornerRadius: 0
     property real padding: miniMode ? 16 : 24
     property bool contentShadowEnabled: false
 
@@ -34,7 +33,7 @@ Item {
     property alias text: subtitleLabel.text
     property alias subtitle: subtitleArea.children
     property alias actions: actionButtons.children
-    property alias backgroundArea: backgroundAreaItem.children
+    property alias backgroundArea: backgroundArea.children
     default property alias content: contentArea.data
     property alias mainLayout: mainColumnLayout.data
 
@@ -76,15 +75,15 @@ Item {
     }
 
     Item {
-        id: backgroundAreaItem
+        id: backgroundArea
         anchors.fill: parent
         z: -1
         Rectangle {
             anchors.fill: parent
-            radius: widgetBase.cornerRadius
+            radius: Math.min(width, height, widgetBase.cornerRadius)
             color: widgetBase.backgroundColor
             opacity: Configs.data.preferences.opacity
-            visible: backgroundArea.length <= 1
+            visible: backgroundArea.length > 1
         }
     }
 
